@@ -5,131 +5,179 @@ import {
 
 import { ICommandPalette, MainAreaWidget } from '@jupyterlab/apputils';
 
-import { Widget } from '@lumino/widgets';
+// import { Widget } from '@lumino/widgets';
 
-interface APODResponse {
-  copyright: string;
-  date: string;
-  explanation: string;
-  media_type: 'video' | 'image';
-  title: string;
-  url: string;
-};
+import { ILauncher } from '@jupyterlab/launcher';
+// import { reactIcon } from '@jupyterlab/ui-components';
+// import { CounterWidget } from './widget';
+import { TableWidget } from './TableWidget';
 
-class APODWidget extends Widget {
-  /**
-  * Construct a new APOD widget.
-  */
-  constructor() {
-    super();
+// interface APODResponse {
+//   copyright: string;
+//   date: string;
+//   explanation: string;
+//   media_type: 'video' | 'image';
+//   title: string;
+//   url: string;
+// };
 
-    this.addClass('my-apodWidget');
+// class APODWidget extends Widget {
+//   /**
+//   * Construct a new APOD widget.
+//   */
+//   constructor() {
+//     super();
 
-    // Add an image element to the panel
-    this.img = document.createElement('img');
-    this.node.appendChild(this.img);
+//     this.addClass('my-apodWidget');
 
-    // Add a summary element to the panel
-    this.summary = document.createElement('p');
-    this.node.appendChild(this.summary);
-  }
+//     // Add an image element to the panel
+//     this.img = document.createElement('img');
+//     this.node.appendChild(this.img);
 
-  /**
-  * The image element associated with the widget.
-  */
-  readonly img: HTMLImageElement;
+//     // Add a summary element to the panel
+//     this.summary = document.createElement('p');
+//     this.node.appendChild(this.summary);
 
-  /**
-  * The summary text element associated with the widget.
-  */
-  readonly summary: HTMLParagraphElement;
+//     // Add the CounterWidget container
+//     this.counterWidgetContainer = document.createElement('div');
+//     this.node.appendChild(this.counterWidgetContainer);
 
-  /**
-  * Handle update requests for the widget.
-  */
-  async updateAPODImage(): Promise<void> {
+//     // Initialize CounterWidget and add it to the container
+//     this.counterWidget = new CounterWidget();
+//   }
 
-    const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${this.randomDate()}`);
+//   /**
+//   * The image element associated with the widget.
+//   */
+//   readonly img: HTMLImageElement;
 
-    if (!response.ok) {
-      const data = await response.json();
-      if (data.error) {
-        this.summary.innerText = data.error.message;
-      } else {
-        this.summary.innerText = response.statusText;
-      }
-      return;
-    }
+//   /**
+//   * The summary text element associated with the widget.
+//   */
+//   readonly summary: HTMLParagraphElement;
 
-    const data = await response.json() as APODResponse;
+//   /**
+//    * The container for the CounterWidget.
+//    */
+//   readonly counterWidgetContainer: HTMLDivElement;
 
-    if (data.media_type === 'image') {
-      // Populate the image
-      this.img.src = data.url;
-      this.img.title = data.title;
-      this.summary.innerText = data.title;
-      if (data.copyright) {
-        this.summary.innerText += ` (Copyright ${data.copyright})`;
-      }
-    } else {
-      this.summary.innerText = 'Random APOD fetched was not an image.';
-    }
-  }
+//   /**
+//    * The CounterWidget instance.
+//    */
+//   readonly counterWidget: CounterWidget;
 
-  /**
-  * Get a random date string in YYYY-MM-DD format.
-  */
-  randomDate(): string {
-    const start = new Date(2010, 1, 1);
-    const end = new Date();
-    const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    return randomDate.toISOString().slice(0, 10);
-  }
-}
+//   /**
+//   * Handle update requests for the widget.
+//   */
+//   async updateAPODImage(): Promise<void> {
+
+//     const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${this.randomDate()}`);
+
+//     if (!response.ok) {
+//       const data = await response.json();
+//       if (data.error) {
+//         this.summary.innerText = data.error.message;
+//       } else {
+//         this.summary.innerText = response.statusText;
+//       }
+//       return;
+//     }
+
+//     const data = await response.json() as APODResponse;
+
+//     if (data.media_type === 'image') {
+//       // Populate the image
+//       this.img.src = data.url;
+//       this.img.title = data.title;
+//       this.summary.innerText = data.title;
+//       if (data.copyright) {
+//         this.summary.innerText += ` (Copyright ${data.copyright})`;
+//       }
+//     } else {
+//       this.summary.innerText = 'Random APOD fetched was not an image.';
+//     }
+//   }
+
+//   /**
+//   * Get a random date string in YYYY-MM-DD format.
+//   */
+//   randomDate(): string {
+//     const start = new Date(2010, 1, 1);
+//     const end = new Date();
+//     const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+//     return randomDate.toISOString().slice(0, 10);
+//   }
+// }
 
 /**
 * Activate the APOD widget extension.
 */
-function activate(app: JupyterFrontEnd, palette: ICommandPalette) {
-  console.log('JupyterLab extension jupyterlab_apod is activated!');
+// function activate(app: JupyterFrontEnd, palette: ICommandPalette) {
+//   console.log('JupyterLab extension jupyterlab_apod is activated!');
 
-  // Define a widget creator function
-  const newWidget = () => {
-    const content = new APODWidget();
-    const widget = new MainAreaWidget({ content });
-    widget.id = 'apod-jupyterlab';
-    widget.title.label = 'Astronomy Picture';
-    widget.title.closable = true;
-    return widget;
-  }
+//   // Define a widget creator function
+//   const newWidget = () => {
+//     const content = new APODWidget();
+//     const widget = new MainAreaWidget({ content });
+//     widget.id = 'apod-jupyterlab';
+//     widget.title.label = 'Astronomy Picture';
+//     widget.title.closable = true;
+//     return widget;
+//   }
 
-  // Create a single widget
-  let widget = newWidget();
+//   // Create a single widget
+//   let widget = newWidget();
 
-  // Add an application command
-  const command: string = 'apod:open';
+//   // Add an application command
+//   const command: string = 'apod:open';
+//   app.commands.addCommand(command, {
+//     label: 'Random Astronomy Picture',
+//     execute: () => {
+//       // Regenerate the widget if disposed
+//       if (widget.isDisposed) {
+//         widget = newWidget();
+//       }
+//       if (!widget.isAttached) {
+//         // Attach the widget to the main work area if it's not there
+//         app.shell.add(widget, 'main');
+//       }
+//       // Refresh the picture in the widget
+//       widget.content.updateAPODImage();
+//       // Activate the widget
+//       app.shell.activateById(widget.id);
+
+//     }
+//   });
+
+//   // Add the command to the palette.
+//   palette.addItem({ command, category: 'Tutorial' });
+// }
+
+function activate2(app: JupyterFrontEnd, palette: ICommandPalette) {
+  console.log('JupyterLab extension with CounterWidget is activated!');
+
+  const command: string = 'counter:open';
+
   app.commands.addCommand(command, {
-    label: 'Random Astronomy Picture',
+    label: 'Open Counter Widget',
     execute: () => {
-      // Regenerate the widget if disposed
-      if (widget.isDisposed) {
-        widget = newWidget();
-      }
+      const content = new TableWidget();
+      const widget = new MainAreaWidget({ content });
+      widget.id = 'counter-widget';
+      widget.title.label = 'Counter Widget';
+      widget.title.closable = true;
+
       if (!widget.isAttached) {
-        // Attach the widget to the main work area if it's not there
         app.shell.add(widget, 'main');
       }
-      // Refresh the picture in the widget
-      widget.content.updateAPODImage();
-      // Activate the widget
       app.shell.activateById(widget.id);
-
     }
   });
 
-  // Add the command to the palette.
-  palette.addItem({ command, category: 'Tutorial' });
+  palette.addItem({ command, category: 'Custom Widgets' });
 }
+
+
 
 /**
  * Initialization data for the jupyterlab_ext_001 extension.
@@ -139,7 +187,8 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'A JupyterLab extension.',
   autoStart: true,
   requires: [ICommandPalette],
-  activate: activate
+  optional: [ILauncher],
+  activate: activate2
 };
 
 export default plugin;
