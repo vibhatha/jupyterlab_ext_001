@@ -154,12 +154,12 @@ import { TableWidget } from './TableWidget';
 // }
 
 function activate2(app: JupyterFrontEnd, palette: ICommandPalette) {
-  console.log('JupyterLab extension with CounterWidget is activated!');
+  console.log('JupyterLab extension with PipLister is activated!');
 
   const command: string = 'counter:open';
 
   app.commands.addCommand(command, {
-    label: 'Open Counter Widget',
+    label: 'Show Python Packages',
     execute: () => {
       const content = new TableWidget();
       const widget = new MainAreaWidget({ content });

@@ -64,6 +64,12 @@ By default, the `jlpm build` command generates the source maps for this extensio
 jupyter lab build --minimize=False
 ```
 
+### Server
+
+```bash
+jupyter server extension enable jupyterlabext001
+```
+
 ### Development uninstall
 
 ```bash
@@ -97,3 +103,4 @@ More information are provided within the [ui-tests](./ui-tests/README.md) README
 ### Packaging the extension
 
 See [RELEASE](RELEASE.md)
+
